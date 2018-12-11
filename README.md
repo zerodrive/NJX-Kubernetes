@@ -1,4 +1,4 @@
-![](logo_s.png)
+![](img/logo_s.png)
 
 ##### Thomas Schwade - November 20, 2018
 
@@ -18,21 +18,21 @@ For this example I assume that we have already set up a small Kubernetes cluster
 
 First we have a look on the master node and check the cluster is up and running:
 
-![](NJXKubernetes01.png)
+![](img/NJXKubernetes01.png)
 
-![](NJXKubernetes02.png)
+![](img/NJXKubernetes02.png)
 
 We see that currently no service except the Kubernetes service itself is installed.
 
 Then we check the available nodes. Nodes are the physical or virtual machines that form the cluster. We can join any number of slave nodes to the cluster. The Kubernetes master automatically distributes the load to the available nodes.
 
-![](NJXKubernetes03.png)
+![](img/NJXKubernetes03.png)
 
 Both the master node and the slave node are available.
 
 Next we check the available pods. Pods are the instances of a deployment in a Kubernetes cluster. A pod represents a set of running containers on the cluster. In our example we are going to create a deployment that consists of a pod with just one Docker container: a Natural Ajax web application.
 
-![](NJXKubernetes04.png)
+![](img/NJXKubernetes04.png)
 
 Of course no pods are running yet. This is because we have not yet created a deployment. But this is not the whole truth: A number of pods that form the Kubernetes infrastructure are already running. We see them with the command
 
@@ -40,11 +40,11 @@ Of course no pods are running yet. This is because we have not yet created a dep
 
 Finally we check the available deployments.
 
-![](NJXKubernetes05.png)
+![](img/NJXKubernetes05.png)
 
 Now we have a look at the slave node. We see a number of docker containers that form the Kubernetes infratructure of the slave node.
 
-![](NJXKubernetes06.png)
+![](img/NJXKubernetes06.png)
 
 ### Creating a deployment
 
@@ -84,19 +84,19 @@ Later, when we create a service specification, we will refer to the label specif
 
 Now we can apply our deployment to the Kubernetes cluster.
 
-![](NJXKubernetes07.png)
+![](img/NJXKubernetes07.png)
 
 And we check if it is available and notice that the two requested replicas have been created.
 
-![](NJXKubernetes08.png)
+![](img/NJXKubernetes08.png)
 
 We can check this in more detail and list the running pods.
 
-![](NJXKubernetes15.png)
+![](img/NJXKubernetes15.png)
 
 Now we check how this looks at the slave node. We see two new Docker containers running catalina.sh. These are the Tomcat instances that run our Natural Ajax web application. And there a two new "/pause" containers. Kubernetes adds this container to every pod. It is responsible for the network communication between pods.
 
-![](NJXKubernetes09.png)
+![](img/NJXKubernetes09.png)
 
 To see how this scales, let us add one more replica to the deployment. we just change 
 
@@ -107,15 +107,15 @@ into
 
 in our deployment descriptor kubetest-deploy.yaml and apply it again.
 
-![](NJXKubernetes10.png)
+![](img/NJXKubernetes10.png)
 
 We check the number of pods:
 
-![](NJXKubernetes16.png)
+![](img/NJXKubernetes16.png)
 
 And on the slave we see the additional running "catalina.sh" and "/pause" container.
 
-![](NJXKubernetes11.png)
+![](img/NJXKubernetes11.png)
 
 ### Creating a service
 
@@ -144,15 +144,15 @@ Our Natural Ajax web application has special requirements. We need the parameter
 
 Now we can create our service.
 
-![](NJXKubernetes12.png)
+![](img/NJXKubernetes12.png)
 
 And list the available services.
 
-![](NJXKubernetes13.png)
+![](img/NJXKubernetes13.png)
 
 The command **describe service** gives detailed insight in how to use the service. The **NodePort 32698** is the port under which we can reach the service on each slave node. The requests wil be evenly dispatched to the three replicas of our deployment (pod) that are listed under **Endpoints**.
 
-![](NJXKubernetes14.png)
+![](img/NJXKubernetes14.png)
 
 ### Testing the service
 
@@ -160,11 +160,11 @@ Let us give it a try:
 
 	http://kube-slave1:32698/kubetest/start.html
 
-![](NJXKubernetes17.png)
+![](img/NJXKubernetes17.png)
 
 And the simple page of the kubetest application displays the connection and session data of our request. 
 
-![](NJXKubernetes18.png)
+![](img/NJXKubernetes18.png)
 
 Our service specification makes sure that client requests are evenly distributed to the three pods. But each individual client session, once started, remains tied to the pod on whichit was initiated.
 
